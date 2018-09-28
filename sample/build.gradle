@@ -23,7 +23,7 @@ android {
     compileSdkVersion Versions.compileSdk
     defaultConfig {
         applicationId "com.ivianuu.contributor.sample"
-        minSdkVersion Versions.minSdk
+        minSdkVersion Versions.minSdkDirector
         targetSdkVersion Versions.targetSdk
         versionCode Versions.versionCode
         versionName Versions.versionName
@@ -44,6 +44,7 @@ dependencies {
     implementation Deps.androidxAppCompat
 
     implementation project(':contributor')
+    implementation project(':contributor-director')
     implementation project(':contributor-view')
     kapt project(':contributor-compiler')
 

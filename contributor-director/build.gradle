@@ -25,13 +25,14 @@ android {
     compileSdkVersion Versions.compileSdk
 
     defaultConfig {
-        minSdkVersion Versions.minSdk
+        minSdkVersion Versions.minSdkDirector
         targetSdkVersion Versions.targetSdk
     }
 }
 
 dependencies {
     api project(':contributor')
+    implementation Deps.director
 }
 
 // build a jar with source files

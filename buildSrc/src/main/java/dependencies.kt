@@ -4,6 +4,7 @@ object Versions {
     // android
     const val compileSdk = 28
     const val minSdk = 14
+    const val minSdkDirector = 16
     const val targetSdk = 28
     const val versionCode = 1
     const val versionName = "SNAPSHOT"
@@ -14,6 +15,7 @@ object Versions {
     const val autoCommon = "0.10"
     const val autoService = "1.0-rc4"
     const val dagger = "2.17"
+    const val director = "SNAPSHOT"
     const val javaPoet = "1.11.1"
     const val kotlin = "1.3.0-rc-57"
     const val mavenGradle = "2.1"
@@ -33,6 +35,8 @@ object Deps {
     const val daggerAndroidSupport = "com.google.dagger:dagger-android-support:${Versions.dagger}"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
+
+    const val director = "com.ivianuu.director:director:${Versions.director}"
 
     const val javaPoet = "com.squareup:javapoet:${Versions.javaPoet}"
 

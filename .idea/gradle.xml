@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/contributor" />
             <option value="$PROJECT_DIR$/contributor-annotations" />
             <option value="$PROJECT_DIR$/contributor-compiler" />
+            <option value="$PROJECT_DIR$/contributor-director" />
             <option value="$PROJECT_DIR$/contributor-view" />
             <option value="$PROJECT_DIR$/sample" />
           </set>
