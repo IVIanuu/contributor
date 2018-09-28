@@ -77,6 +77,9 @@ abstract class ViewInjectionModule {
     @Multibinds
     abstract fun viewInjectorFactories(): Map<Class<out View>, AndroidInjector.Factory<out View>>
 
+    @Multibinds
+    abstract fun viewInjectorFactoriesWithStringKeys(): Map<String, AndroidInjector.Factory<out View>>
+
 }
 
 /**

@@ -78,6 +78,9 @@ abstract class DirectorInjectionModule {
     @Multibinds
     abstract fun controllerInjectorFactories(): Map<Class<out View>, AndroidInjector.Factory<out Controller>>
 
+    @Multibinds
+    abstract fun controllerInjectorFactoriesWithStringKeys(): Map<String, AndroidInjector.Factory<out Controller>>
+
 }
 
 /**
