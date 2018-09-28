@@ -16,7 +16,6 @@
 
 package com.ivianuu.contributor.director
 
-import android.view.View
 import com.ivianuu.director.Controller
 import dagger.MapKey
 import dagger.Module
@@ -76,7 +75,7 @@ object DirectorInjection {
 abstract class DirectorInjectionModule {
 
     @Multibinds
-    abstract fun controllerInjectorFactories(): Map<Class<out View>, AndroidInjector.Factory<out Controller>>
+    abstract fun controllerInjectorFactories(): Map<Class<out Controller>, AndroidInjector.Factory<out Controller>>
 
     @Multibinds
     abstract fun controllerInjectorFactoriesWithStringKeys(): Map<String, AndroidInjector.Factory<out Controller>>
