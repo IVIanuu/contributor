@@ -35,7 +35,7 @@ object Deps {
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
 
-    const val director = "com.github.IVIanuu.dir:director:${Versions.director}"
+    const val director = "com.github.IVIanuu.director:director:${Versions.director}"
 
     const val javaPoet = "com.squareup:javapoet:${Versions.javaPoet}"
 
