@@ -7,15 +7,14 @@ object Versions {
     const val minSdkDirector = 16
     const val targetSdk = 28
     const val versionCode = 1
-    const val versionName = "SNAPSHOT"
-    const val groupId = "com.ivianuu.contributor"
+    const val versionName = "0.0.1"
 
     const val androidGradlePlugin = "3.2.0"
     const val androidx = "1.0.0"
     const val autoCommon = "0.10"
     const val autoService = "1.0-rc4"
     const val dagger = "2.17"
-    const val director = "SNAPSHOT"
+    const val director = "55a20618c4"
     const val javaPoet = "1.11.1"
     const val kotlin = "1.3.0-rc-57"
     const val mavenGradle = "2.1"
@@ -36,7 +35,7 @@ object Deps {
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
 
-    const val director = "com.ivianuu.director:director:${Versions.director}"
+    const val director = "com.github.IVIanuu:director:${Versions.director}"
 
     const val javaPoet = "com.squareup:javapoet:${Versions.javaPoet}"
 
