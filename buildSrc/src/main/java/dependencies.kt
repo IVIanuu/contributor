@@ -25,7 +25,6 @@ object Deps {
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
 
     const val androidxAppCompat = "androidx.appcompat:appcompat:${Versions.androidx}"
-
     const val autoCommon = "com.google.auto:auto-common:${Versions.autoCommon}"
     const val autoService = "com.google.auto.service:auto-service:${Versions.autoService}"
 
