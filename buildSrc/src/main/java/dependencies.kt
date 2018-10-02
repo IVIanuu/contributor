@@ -13,7 +13,7 @@ object Versions {
     const val androidx = "1.0.0"
     const val autoCommon = "0.10"
     const val autoService = "1.0-rc4"
-    const val dagger = "2.17"
+    const val dagger = "2.16"
     const val director = "55a20618c4"
     const val javaPoet = "1.11.1"
     const val kotlin = "1.3.0-rc-57"
