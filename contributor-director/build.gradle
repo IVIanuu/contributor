@@ -28,7 +28,7 @@ android {
 
 dependencies {
     api project(':contributor')
-    implementation Deps.director
+    api Deps.director
 }
 
 apply from: rootProject.file('gradle/local-publish.gradle')

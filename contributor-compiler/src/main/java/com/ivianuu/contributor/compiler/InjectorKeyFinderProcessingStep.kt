@@ -31,9 +31,6 @@ import javax.lang.model.type.WildcardType
 import javax.lang.model.util.ElementFilter
 import javax.tools.Diagnostic
 
-/**
- * @author Manuel Wrage (IVIanuu)
- */
 class InjectorKeyFinderProcessingStep(private val processingEnv: ProcessingEnvironment) : BasicAnnotationProcessor.ProcessingStep {
 
     val keys: Set<InjectorKey>

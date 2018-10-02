@@ -22,4 +22,7 @@ import javax.inject.Scope
 annotation class PerActivity
 
 @Scope
+annotation class PerController
+
+@Scope
 annotation class PerView

@@ -30,9 +30,6 @@ import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 import javax.lang.model.element.Modifier
 
-/**
- * @author Manuel Wrage (IVIanuu)
- */
 class ContributeInjectorGenerator(private val injectorDescriptor: ContributeInjectorDescriptor) {
 
     fun generate(): JavaFile {

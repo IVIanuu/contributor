@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package com.ivianuu.contributor.compiler
+package com.ivianuu.contributor.sample
 
-import com.squareup.javapoet.ClassName
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.ivianuu.director.Controller
 
-data class ContributionsModuleDescriptor(
-    val moduleName: ClassName,
-    val isPublic: Boolean,
-    val contributions: Set<ContributeInjectorDescriptor>
-)
+/**
+ * @author Manuel Wrage (IVIanuu)
+ */
+class MyController : Controller() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup,
+        savedViewState: Bundle?
+    ): View = View(container.context)
+}

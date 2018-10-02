@@ -20,9 +20,6 @@ import com.google.auto.common.BasicAnnotationProcessor
 import com.google.auto.service.AutoService
 import javax.annotation.processing.Processor
 
-/**
- * Contributor processor
- */
 @AutoService(Processor::class)
 class ContributorProcessor : BasicAnnotationProcessor() {
 

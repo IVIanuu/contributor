@@ -18,9 +18,6 @@ package com.ivianuu.contributor.compiler
 
 import com.squareup.javapoet.ClassName
 
-/**
- * @author Manuel Wrage (IVIanuu)
- */
 data class InjectorKey(
     val baseType: ClassName,
     val mapKey: ClassName

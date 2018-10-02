@@ -18,6 +18,7 @@ package com.ivianuu.contributor.sample
 
 import android.app.Application
 import com.ivianuu.contributor.InjectorKeyRegistry
+import com.ivianuu.contributor.director.ControllerKey
 import com.ivianuu.contributor.view.ViewInjectionModule
 import com.ivianuu.contributor.view.ViewKey
 import dagger.Component
@@ -37,7 +38,7 @@ class App : Application() {
 
 }
 
-@InjectorKeyRegistry([ViewKey::class])
+@InjectorKeyRegistry([ControllerKey::class, ViewKey::class])
 @Singleton
 @Component(
     modules = [

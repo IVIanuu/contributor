@@ -23,9 +23,6 @@ import javax.lang.model.element.AnnotationMirror
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
-/**
- * @author Manuel Wrage (IVIanuu)
- */
 data class ContributeInjectorDescriptor(
     val element: ExecutableElement,
     val target: ClassName,

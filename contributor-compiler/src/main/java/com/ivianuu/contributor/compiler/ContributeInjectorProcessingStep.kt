@@ -26,12 +26,10 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.inject.Scope
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
+import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-/**
- * @author Manuel Wrage (IVIanuu)
- */
 class ContributeInjectorProcessingStep(
     private val processingEnv: ProcessingEnvironment,
     private val keyFinder: InjectorKeyFinderProcessingStep
@@ -49,11 +47,10 @@ class ContributeInjectorProcessingStep(
             .map { it.generate() }
             .forEach { writeFile(processingEnv, it) }
 
-        if (descriptors.isNotEmpty()) {
-            val descriptor = createContributesModuleDescriptor(descriptors)
-            val generator = ContributionsModuleGenerator(descriptor)
-            writeFile(processingEnv, generator.generate())
-        }
+        createContributesModuleDescriptors(descriptors)
+            .map { ContributionsModuleGenerator(it) }
+            .map { it.generate() }
+            .forEach { writeFile(processingEnv, it) }
 
         return mutableSetOf()
     }
@@ -106,13 +103,19 @@ class ContributeInjectorProcessingStep(
         return builder.build()
     }
 
-    private fun createContributesModuleDescriptor(contributions: List<ContributeInjectorDescriptor>): ContributionsModuleDescriptor {
-        val firstContribution = contributions.first()
+    private fun createContributesModuleDescriptors(contributions: List<ContributeInjectorDescriptor>): List<ContributionsModuleDescriptor> {
+        val byModule = contributions.groupBy {
+            it.element.enclosingElement as TypeElement
+        }
 
-        val module = firstContribution.element.enclosingElement as TypeElement
-
-        val contributionsName = ClassName.bestGuess(module.qualifiedName.toString() + "_Contributions")
-
-        return ContributionsModuleDescriptor(contributionsName, contributions.toSet())
+        return byModule.map { (module, descriptors) ->
+            val contributionsName =
+                ClassName.bestGuess(module.qualifiedName.toString() + "_Contributions")
+            ContributionsModuleDescriptor(
+                contributionsName,
+                module.modifiers.contains(Modifier.PUBLIC),
+                descriptors.toSet()
+            )
+        }
     }
 }

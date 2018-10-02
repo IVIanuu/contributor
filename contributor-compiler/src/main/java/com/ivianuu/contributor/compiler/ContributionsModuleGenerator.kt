@@ -20,10 +20,8 @@ import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.TypeSpec
 import dagger.Module
+import javax.lang.model.element.Modifier
 
-/**
- * @author Manuel Wrage (IVIanuu)
- */
 class ContributionsModuleGenerator(private val descriptor: ContributionsModuleDescriptor) {
 
     fun generate(): JavaFile {
@@ -37,6 +35,11 @@ class ContributionsModuleGenerator(private val descriptor: ContributionsModuleDe
                     }
                     .build()
             )
+            .apply {
+                if (descriptor.isPublic) {
+                    addModifiers(Modifier.PUBLIC)
+                }
+            }
 
         return JavaFile.builder(descriptor.moduleName.packageName(), type.build()).build()
     }

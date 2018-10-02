@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package com.ivianuu.contributor.compiler
+package com.ivianuu.contributor.sample
 
-import com.squareup.javapoet.ClassName
+import com.ivianuu.contributor.ContributeInjector
+import com.ivianuu.director.Controller
+import dagger.Module
 
-data class ContributionsModuleDescriptor(
-    val moduleName: ClassName,
-    val isPublic: Boolean,
-    val contributions: Set<ContributeInjectorDescriptor>
-)
+/**
+ * @author Manuel Wrage (IVIanuu)
+ */
+@Module
+abstract class ControllerBindingModule {
+
+    @PerController
+    @ContributeInjector(modules = [ViewBindingModule_Contributions::class])
+    abstract fun bindMyController(): Controller
+}
