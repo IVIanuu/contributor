@@ -13,5 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-include ':sample', ':contributor-annotations', ':contributor', ':contributor-compiler', ':contributor-view', ':contributor-director'
+include(
+    ":contributor",
+    ":contributor-annotations",
+    ":contributor-compiler",
+    ":contributor-director",
+    ":contributor-view",
+    ":sample"
+)
