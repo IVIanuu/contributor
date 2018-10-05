@@ -26,8 +26,8 @@ plugins {
 group = "com.github.ivianuu"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
 }
 
 dependencies {
@@ -40,8 +40,6 @@ dependencies {
 
     implementation(Deps.daggerAndroidProcessor)
     implementation(Deps.javaPoet)
-
-    compile(files("${System.getProperty("java.home")}/../lib/tools.jar"))
 
     implementation(Deps.kotlinStdLib)
 }

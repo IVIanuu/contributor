@@ -24,7 +24,6 @@ object Versions {
     const val mavenGradle = "2.1"
 }
 
-
 object Deps {
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
 

@@ -26,7 +26,13 @@ import dagger.Module
 abstract class ViewBindingModule {
 
     @PerView
-    @ContributeInjector
+    @ContributeInjector(modules = [MyModule1::class, MyModule2::class])
     abstract fun bindMyView(): MyView
 
 }
+
+@Module
+abstract class MyModule1
+
+@Module
+abstract class MyModule2

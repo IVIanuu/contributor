@@ -54,10 +54,10 @@ class InjectorKeyFinderProcessingStep(private val processingEnv: ProcessingEnvir
         val annotation =
             MoreElements.getAnnotationMirror(element, InjectorKeyRegistry::class.java).get()
 
-        val keysValue = annotation.getClassArrayValues("keys")
+        val keysValue = annotation.getTypeListValue("keys")
 
         for (keyClass in keysValue) {
-            val key = processingEnv.elementUtils.getTypeElement(keyClass)
+            val key = processingEnv.elementUtils.getTypeElement(keyClass.toString())
             if (MoreElements.isAnnotationPresent(MoreTypes.asElement(key.asType()), MapKey::class.java)) {
                 val mapKeyValue = mapKeyValue(key.asType())
 

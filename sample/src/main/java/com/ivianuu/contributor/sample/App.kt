@@ -39,6 +39,8 @@ class App : Application() {
 }
 
 @InjectorKeyRegistry([ControllerKey::class, ViewKey::class])
+interface InjectorKeyRegistry
+
 @Singleton
 @Component(
     modules = [

@@ -94,9 +94,8 @@ class ContributeInjectorProcessingStep(
         val annotation =
             MoreElements.getAnnotationMirror(element, ContributeInjector::class.java).get()
 
-        annotation.getClassArrayValues(
-            "modules")
-            .map { processingEnv.elementUtils.getTypeElement(it) }
+        annotation.getTypeListValue("modules")
+            .map { processingEnv.elementUtils.getTypeElement(it.toString()) }
             .map { ClassName.get(it) }
             .forEach { builder.addModule(it) }
 
