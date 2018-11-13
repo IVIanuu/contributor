@@ -19,6 +19,8 @@ package com.ivianuu.contributor.compiler
 import com.google.auto.common.AnnotationMirrors
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.auto.common.MoreElements
+import com.google.common.base.CaseFormat
+import com.google.common.base.Joiner
 import com.google.common.collect.SetMultimap
 import com.ivianuu.contributor.ContributeInjector
 import com.squareup.javapoet.ClassName
@@ -32,7 +34,7 @@ import javax.tools.Diagnostic
 
 class ContributeInjectorProcessingStep(
     private val processingEnv: ProcessingEnvironment,
-    private val keyFinder: InjectorKeyFinderProcessingStep
+    private val useStringKeys: Boolean
 ) : BasicAnnotationProcessor.ProcessingStep {
 
     override fun process(elementsByAnnotation: SetMultimap<Class<out Annotation>, Element>): MutableSet<Element> {
@@ -59,24 +61,6 @@ class ContributeInjectorProcessingStep(
         mutableSetOf(ContributeInjector::class.java)
 
     private fun createContributeInjectorDescriptor(element: ExecutableElement): ContributeInjectorDescriptor? {
-        val injectedType = element.returnType
-
-        val key = keyFinder.keys.firstOrNull {
-            processingEnv.typeUtils.isAssignable(
-                injectedType,
-                processingEnv.elementUtils.getTypeElement(it.baseType.toString()).asType()
-            )
-        }
-
-        if (key == null) {
-            processingEnv.messager.printMessage(
-                Diagnostic.Kind.ERROR,
-                "no matching binding key found for $element"
-            )
-
-            return null
-        }
-
         if (!MoreElements.isAnnotationPresent(element.enclosingElement, dagger.Module::class.java)) {
             processingEnv.messager.printMessage(
                 Diagnostic.Kind.ERROR,
@@ -85,21 +69,45 @@ class ContributeInjectorProcessingStep(
             return null
         }
 
-        val builder =
-            ContributeInjectorDescriptor.builder(element, key.baseType, key.mapKey)
+        val enclosingModule = ClassName.get(element.enclosingElement as TypeElement)
 
-        AnnotationMirrors.getAnnotatedAnnotations(element, Scope::class.java)
-            .forEach { builder.addScope(it) }
+        val moduleName = enclosingModule
+            .topLevelClassName()
+            .peerClass(
+                Joiner.on('_').join(enclosingModule.simpleNames())
+                        + "_"
+                        + CaseFormat.LOWER_CAMEL.to(
+                    CaseFormat.UPPER_CAMEL,
+                    element.simpleName.toString()
+                )
+            )
+
+        val target = ClassName.bestGuess(element.returnType.toString())
+
+        val baseName = target.simpleName()
+        val subcomponentName = moduleName.nestedClass(baseName + "Subcomponent")
+        val subcomponenBuilderName = subcomponentName.nestedClass("Builder")
+
+        val scopes = AnnotationMirrors.getAnnotatedAnnotations(element, Scope::class.java)
 
         val annotation =
             MoreElements.getAnnotationMirror(element, ContributeInjector::class.java).get()
 
-        annotation.getTypeListValue("modules")
+        val modules = annotation.getTypeListValue("modules")
             .map { processingEnv.elementUtils.getTypeElement(it.toString()) }
             .map { ClassName.get(it) }
-            .forEach { builder.addModule(it) }
+            .toSet()
 
-        return builder.build()
+        return ContributeInjectorDescriptor(
+            element,
+            target,
+            moduleName,
+            modules,
+            scopes,
+            subcomponentName,
+            subcomponenBuilderName,
+            useStringKeys
+        )
     }
 
     private fun createContributesModuleDescriptors(contributions: List<ContributeInjectorDescriptor>): List<ContributionsModuleDescriptor> {

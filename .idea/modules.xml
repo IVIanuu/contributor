@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/contributor/contributor.iml" filepath="$PROJECT_DIR$/contributor/contributor.iml" />
       <module fileurl="file://$PROJECT_DIR$/contributor-annotations/contributor-annotations.iml" filepath="$PROJECT_DIR$/contributor-annotations/contributor-annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/contributor-compiler/contributor-compiler.iml" filepath="$PROJECT_DIR$/contributor-compiler/contributor-compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/contributor-director/contributor-director.iml" filepath="$PROJECT_DIR$/contributor-director/contributor-director.iml" />
       <module fileurl="file://$PROJECT_DIR$/contributor-view/contributor-view.iml" filepath="$PROJECT_DIR$/contributor-view/contributor-view.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>

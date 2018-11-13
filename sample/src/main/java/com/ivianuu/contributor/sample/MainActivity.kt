@@ -17,17 +17,24 @@
 package com.ivianuu.contributor.sample
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.ivianuu.contributor.view.HasViewInjector
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasViewInjector {
 
     @Inject lateinit var app: App
+    @Inject lateinit var viewInjector: DispatchingAndroidInjector<View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(MyView(this))
     }
+
+    override fun viewInjector(): AndroidInjector<View> = viewInjector
 }

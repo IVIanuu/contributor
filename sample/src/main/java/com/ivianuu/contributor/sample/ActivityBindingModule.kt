@@ -26,7 +26,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBindingModule {
 
     @PerActivity
-    @ContributesAndroidInjector(modules = [ControllerBindingModule_Contributions::class])
+    @ContributesAndroidInjector(modules = [ViewBindingModule_Contributions::class])
     abstract fun bindMainActivity(): MainActivity
 
 }

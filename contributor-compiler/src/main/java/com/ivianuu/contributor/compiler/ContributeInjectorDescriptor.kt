@@ -16,12 +16,9 @@
 
 package com.ivianuu.contributor.compiler
 
-import com.google.common.base.CaseFormat
-import com.google.common.base.Joiner
 import com.squareup.javapoet.ClassName
 import javax.lang.model.element.AnnotationMirror
 import javax.lang.model.element.ExecutableElement
-import javax.lang.model.element.TypeElement
 
 data class ContributeInjectorDescriptor(
     val element: ExecutableElement,
@@ -31,86 +28,5 @@ data class ContributeInjectorDescriptor(
     val scopes: Set<AnnotationMirror>,
     val subcomponentName: ClassName,
     val subcomponentBuilderName: ClassName,
-    val baseType: ClassName?,
-    val mapKey: ClassName?
-) {
-
-    class Builder internal constructor(
-        val element: ExecutableElement,
-        val target: ClassName,
-        val moduleName: ClassName,
-        val subcomponentName: ClassName,
-        val subcomponenBuilderName: ClassName,
-        val baseType: ClassName?,
-        val mapKey: ClassName?
-    ) {
-
-        private val modules = mutableSetOf<ClassName>()
-        private val scopes = mutableSetOf<AnnotationMirror>()
-
-        fun addModule(module: ClassName): Builder {
-            modules.add(module)
-            return this
-        }
-
-        fun addScope(scope: AnnotationMirror): Builder {
-            scopes.add(scope)
-            return this
-        }
-
-        fun build(): ContributeInjectorDescriptor {
-            return ContributeInjectorDescriptor(
-                element,
-                target,
-                moduleName,
-                modules,
-                scopes,
-                subcomponentName,
-                subcomponenBuilderName,
-                baseType,
-                mapKey
-            )
-        }
-
-    }
-
-    companion object {
-
-        fun builder(
-            element: ExecutableElement,
-            baseType: ClassName?,
-            mapKey: ClassName?
-        ): Builder {
-            val enclosingModule = ClassName.get(element.enclosingElement as TypeElement)
-
-            val moduleName = enclosingModule
-                .topLevelClassName()
-                .peerClass(
-                    Joiner.on('_').join(enclosingModule.simpleNames())
-                            + "_"
-                            + CaseFormat.LOWER_CAMEL.to(
-                        CaseFormat.UPPER_CAMEL,
-                        element.simpleName.toString()
-                    )
-                )
-
-            val target = ClassName.bestGuess(element.returnType.toString())
-
-            val baseName = target.simpleName()
-            val subcomponentName = moduleName.nestedClass(baseName + "Subcomponent")
-            val subcomponenBuilderName = subcomponentName.nestedClass("Builder")
-
-            return Builder(
-                element,
-                target,
-                moduleName,
-                subcomponentName,
-                subcomponenBuilderName,
-                baseType,
-                mapKey
-            )
-        }
-
-    }
-
-}
+    val useStringKeys: Boolean
+)

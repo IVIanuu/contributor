@@ -16,35 +16,26 @@
 
 package com.ivianuu.contributor.sample
 
-import android.app.Application
-import com.ivianuu.contributor.InjectorKeyRegistry
-import com.ivianuu.contributor.director.ControllerKey
 import com.ivianuu.contributor.view.ViewInjectionModule
-import com.ivianuu.contributor.view.ViewKey
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import javax.inject.Singleton
 
 /**
  * @author Manuel Wrage (IVIanuu)
  */
-class App : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        DaggerAppComponent.builder().create(this).inject(this)
-    }
-
+class App : DaggerApplication() {
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
+        DaggerAppComponent.builder().create(this)
 }
-
-@InjectorKeyRegistry([ControllerKey::class, ViewKey::class])
-interface InjectorKeyRegistry
 
 @Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
+        ServiceBindingModule::class,
         ViewInjectionModule::class,
         ActivityBindingModule::class
     ]

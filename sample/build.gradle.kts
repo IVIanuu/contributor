@@ -28,10 +28,16 @@ android {
     defaultConfig {
         applicationId = Build.applicationId
         buildToolsVersion = Build.buildToolsVersion
-        minSdkVersion(Build.minSdkDirector)
+        minSdkVersion(Build.minSdk)
         targetSdkVersion(Build.targetSdk)
         versionCode = Build.versionCode
         versionName = Build.versionName
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                argument("dagger.android.experimentalUseStringKeys", "true")
+            }
+        }
     }
 
     androidExtensions {
@@ -47,7 +53,6 @@ dependencies {
     implementation(Deps.androidxAppCompat)
 
     implementation(project(":contributor"))
-    implementation(project(":contributor-director"))
     implementation(project(":contributor-view"))
     kapt(project(":contributor-compiler"))
 
@@ -55,5 +60,5 @@ dependencies {
     implementation(Deps.daggerAndroid)
     implementation(Deps.daggerAndroidSupport)
     kapt(Deps.daggerCompiler)
-    kapt(Deps.daggerAndroidProcessor)
+    //kapt(Deps.daggerAndroidProcessor)
 }

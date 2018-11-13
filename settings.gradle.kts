@@ -17,7 +17,6 @@ include(
     ":contributor",
     ":contributor-annotations",
     ":contributor-compiler",
-    ":contributor-director",
     ":contributor-view",
     ":sample"
 )

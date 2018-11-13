@@ -21,23 +21,26 @@ import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterizedTypeName
+import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.TypeSpec
 import com.squareup.javapoet.WildcardTypeName
 import dagger.Binds
 import dagger.Module
 import dagger.Subcomponent
+import dagger.android.AndroidInjectionKey
 import dagger.android.AndroidInjector
+import dagger.multibindings.ClassKey
 import dagger.multibindings.IntoMap
 import javax.lang.model.element.Modifier
 
-class ContributeInjectorGenerator(private val injectorDescriptor: ContributeInjectorDescriptor) {
+class ContributeInjectorGenerator(private val descriptor: ContributeInjectorDescriptor) {
 
     fun generate(): JavaFile {
-        val type = TypeSpec.classBuilder(injectorDescriptor.moduleName)
+        val type = TypeSpec.classBuilder(descriptor.moduleName)
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
             .addAnnotation(
                 AnnotationSpec.builder(Module::class.java)
-                    .addMember("subcomponents", "\$T.class", injectorDescriptor.subcomponentName)
+                    .addMember("subcomponents", "\$T.class", descriptor.subcomponentName)
                     .build()
             )
             .addMethod(constructor())
@@ -45,7 +48,7 @@ class ContributeInjectorGenerator(private val injectorDescriptor: ContributeInje
             .addType(subcomponent())
             .build()
 
-        return JavaFile.builder(injectorDescriptor.moduleName.packageName(), type)
+        return JavaFile.builder(descriptor.moduleName.packageName(), type)
             .build()
     }
 
@@ -56,18 +59,18 @@ class ContributeInjectorGenerator(private val injectorDescriptor: ContributeInje
     }
 
     private fun subcomponent(): TypeSpec {
-        val subcomponent = TypeSpec.interfaceBuilder(injectorDescriptor.subcomponentName)
+        val subcomponent = TypeSpec.interfaceBuilder(descriptor.subcomponentName)
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(
                 ParameterizedTypeName.get(
                     ClassName.get(AndroidInjector::class.java),
-                    injectorDescriptor.target
+                    descriptor.target
                 )
             )
             .addAnnotation(subcomponentAnnotation())
             .addType(subcomponentBuilder())
 
-        injectorDescriptor.scopes.forEach { subcomponent.addAnnotation(AnnotationSpec.get(it)) }
+        descriptor.scopes.forEach { subcomponent.addAnnotation(AnnotationSpec.get(it)) }
 
         return subcomponent.build()
     }
@@ -75,7 +78,7 @@ class ContributeInjectorGenerator(private val injectorDescriptor: ContributeInje
     private fun subcomponentAnnotation(): AnnotationSpec {
         val annotation = AnnotationSpec.builder(Subcomponent::class.java)
 
-        injectorDescriptor.modules
+        descriptor.modules
             .forEach { annotation.addMember("modules", "\$T.class", it) }
 
         return annotation.build()
@@ -86,32 +89,42 @@ class ContributeInjectorGenerator(private val injectorDescriptor: ContributeInje
             .addModifiers(Modifier.ABSTRACT)
             .addAnnotation(Binds::class.java)
             .addAnnotation(IntoMap::class.java)
-            .addAnnotation(
-                AnnotationSpec.builder(injectorDescriptor.mapKey)
-                    .addMember("value", "\$T.class", injectorDescriptor.target)
-                    .build()
-            )
+            .apply {
+                if (descriptor.useStringKeys) {
+                    addAnnotation(
+                        AnnotationSpec.builder(AndroidInjectionKey::class.java)
+                            .addMember("value", "\$S", descriptor.target.toString())
+                            .build()
+                    )
+                } else {
+                    addAnnotation(
+                        AnnotationSpec.builder(ClassKey::class.java)
+                            .addMember("value", "\$T.class", descriptor.target)
+                            .build()
+                    )
+                }
+            }
             .addParameter(
-                injectorDescriptor.subcomponentName.nestedClass("Builder"),
+                descriptor.subcomponentName.nestedClass("Builder"),
                 "builder"
             )
             .returns(
                 ParameterizedTypeName.get(
                     ClassName.get(AndroidInjector.Factory::class.java),
-                    WildcardTypeName.subtypeOf(injectorDescriptor.baseType)
+                    WildcardTypeName.subtypeOf(TypeName.OBJECT)
                 )
             )
             .build()
     }
 
     private fun subcomponentBuilder(): TypeSpec {
-        return TypeSpec.classBuilder(injectorDescriptor.subcomponentBuilderName)
+        return TypeSpec.classBuilder(descriptor.subcomponentBuilderName)
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT, Modifier.STATIC)
             .addAnnotation(Subcomponent.Builder::class.java)
             .superclass(
                 ParameterizedTypeName.get(
                     ClassName.get(AndroidInjector.Builder::class.java),
-                    injectorDescriptor.target
+                    descriptor.target
                 )
             )
             .build()

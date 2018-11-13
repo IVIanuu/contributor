@@ -26,12 +26,16 @@ plugins {
 group = "com.github.ivianuu"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
     implementation(Deps.autoCommon)
+
+    implementation(Deps.autoValue)
+    kapt(Deps.autoValue)
+    annotationProcessor(Deps.autoValue)
 
     implementation(Deps.autoService)
     kapt(Deps.autoService)

@@ -23,16 +23,21 @@ import javax.annotation.processing.Processor
 @AutoService(Processor::class)
 class ContributorProcessor : BasicAnnotationProcessor() {
 
-    override fun initSteps(): MutableIterable<ProcessingStep> {
-        val injectorKeyFinder = InjectorKeyFinderProcessingStep(processingEnv)
-
-        return mutableSetOf(
-            injectorKeyFinder,
-            ContributeInjectorProcessingStep(
-                processingEnv,
-                injectorKeyFinder
-            )
+    override fun initSteps() = mutableSetOf(
+        ContributeInjectorProcessingStep(
+            processingEnv, useStringKeys()
         )
+    )
+
+    private fun useStringKeys(): Boolean {
+        if (!processingEnv.options.containsKey(OPTION_USE_STRING_KEYS)) {
+            return false
+        }
+        val value = processingEnv.options[OPTION_USE_STRING_KEYS]!!
+        return value.toBoolean()
     }
 
+    private companion object {
+        private const val OPTION_USE_STRING_KEYS = "dagger.android.experimentalUseStringKeys"
+    }
 }
